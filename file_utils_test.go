@@ -61,7 +61,7 @@ func TestReadAllLine(t *testing.T) {
 			},
 		},
 		{
-			name:      "crlf_ending_with_empty_lines_and_omit_empty_lines",
+			name:      "crlf_ending_with_empty_lines_and_not_omit_empty_lines",
 			fileName:  path.Join(".", "testfiles", "crlf_ending_with_empty_lines.txt"),
 			omitEmpty: false,
 			expectedLines: []string{
@@ -74,8 +74,11 @@ func TestReadAllLine(t *testing.T) {
 				"\t",
 				"{",
 				"    \"id\": 1,",
+				"",
 				"    \"name\": \"Michael Ushakov\"",
 				"}",
+				"",
+				"",
 			},
 		},
 	}
