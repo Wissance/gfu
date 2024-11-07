@@ -36,10 +36,50 @@ var err error
 text, err = gfu.ReadAllText("my_file.txt")
 ```
 3. Write slice of strings in file via `WriteAllLines`
+This Write overwrites existing file, to add some lines **_without file erasing_** use `AppendAllLines`
 ```go
+import (
+	"github.com/wissance/gfu"
+	// other imports
+)
 
+lines := []string{
+"{",
+"    \"id\": 1,",
+"    \"name\": \"Michael Ushakov\"",
+"}",
+}
+file := "write_all_lines_test.txt"
+err := gfu.WriteAllLines(file, lines, "\n")
 ```
-4. Write text in file via `WriteAllText`:
+4. Write text in file via `WriteAllText`, this is _boring_ wrap around `os.WriteFile`
 ```go
+import (
+	"github.com/wissance/gfu"
+	// other imports
+)
 
+text := "some text"
+var err error
+
+// some operations ...
+
+err = gfu.WriteAllText("my_file.txt", text)
+```
+
+5. Append lines to existing file `AppendAllText`, if file doesn't exist this function  create it 
+```go
+import (
+	"github.com/wissance/gfu"
+	// other imports
+)
+
+lines := []string{
+"{",
+"    \"id\": 2,",
+"    \"name\": \"Alex Petrov\"",
+"}",
+}
+file := "write_all_lines_test.txt"
+err := gfu.AppendAllLines(file, lines, "\n")
 ```
