@@ -105,7 +105,7 @@ func TestWriteAllLines(t *testing.T) {
 		"    \"name\": \"Michael Ushakov\"",
 		"}",
 	}
-	testFile := "sample_test.txt"
+	testFile := "write_all_lines_test.txt"
 	err := gfu.WriteAllLines(testFile, lines, "\n")
 	assert.NoError(t, err)
 	readLines, err := gfu.ReadAllLines(testFile, true)
@@ -115,5 +115,34 @@ func TestWriteAllLines(t *testing.T) {
 }
 
 func TestAppendAllLines(t *testing.T) {
+	lines := []string{
+		"Line one",
+		"Line two",
+		"Line three",
+		"Line four",
+		"{",
+		"    \"id\": 1,",
+		"    \"name\": \"Michael Ushakov\"",
+		"}",
+	}
+	testFile := "append_all_lines_test.txt"
+	err := gfu.WriteAllLines(testFile, lines, "\n")
+	assert.NoError(t, err)
 
+	appendingLines := []string{
+		"Line five",
+		"Line six",
+		"<html><head><title>This is the simplest demo page</title></head><body><h1>Main page header</h1></body></html>",
+		"Line seven",
+	}
+
+	err = gfu.AppendAllLines(testFile, appendingLines, "\n")
+	assert.NoError(t, err)
+	expectedLines := make([]string, 0)
+	expectedLines = append(expectedLines, lines...)
+	expectedLines = append(expectedLines, appendingLines...)
+	actualLines, err := gfu.ReadAllLines(testFile, true)
+	assert.NoError(t, err)
+	testingutils.CheckStrings(t, expectedLines, actualLines, true, true)
+	_ = os.Remove(testFile)
 }
