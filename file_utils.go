@@ -45,14 +45,22 @@ func ReadAllLines(file string, omitEmpty bool) ([]string, error) {
 	return lines[0:finalLinesNumber], err
 }
 
-func ReadAllText(file string) string {
-	return ""
+// ReadAllText just wraps os.ReadFile and return reading result as Text (string)
+func ReadAllText(file string) (string, error) {
+	var err error
+	var content []byte
+	// 1. Read file in memory
+	content, err = os.ReadFile(file)
+	if err != nil {
+		return "", err
+	}
+	return string(content), err
 }
 
-func WriteAllLines(file string) error {
+func WriteAllLines(file string, lines []string, separator string) error {
 	return nil
 }
 
-func WriteAllText(file string) error {
+func WriteAllText(file string, text string) error {
 	return nil
 }
