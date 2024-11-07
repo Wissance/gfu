@@ -57,10 +57,36 @@ func ReadAllText(file string) (string, error) {
 	return string(content), err
 }
 
+// WriteAllLines write lines in file truncating it, if file does not exists
+// it will be created
 func WriteAllLines(file string, lines []string, separator string) error {
+	bytes := prepareBytes(lines, separator)
+	return os.WriteFile(file, bytes, 0666)
+}
+
+func AppendAllLines(file string, lines []string, separator string) error {
+	textBuilder := &strings.Builder{}
+	textBuilder.Grow(8192)
+
+	for _, l := range lines {
+		textBuilder.WriteString(l)
+	}
 	return nil
 }
 
-func WriteAllText(file string, text string) error {
+func WriteAllText(file string, text string) []byte {
 	return nil
+}
+
+func prepareBytes(lines []string, separator string) []byte {
+	textBuilder := &strings.Builder{}
+	textBuilder.Grow(8192)
+
+	for _, l := range lines {
+		textBuilder.WriteString(l)
+		if !strings.HasSuffix(l, separator) {
+			textBuilder.WriteString(separator)
+		}
+	}
+	return []byte(textBuilder.String())
 }
