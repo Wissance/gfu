@@ -65,13 +65,18 @@ func WriteAllLines(file string, lines []string, separator string) error {
 }
 
 func AppendAllLines(file string, lines []string, separator string) error {
-	textBuilder := &strings.Builder{}
-	textBuilder.Grow(8192)
-
-	for _, l := range lines {
-		textBuilder.WriteString(l)
+	f, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
 	}
-	return nil
+	bytes := prepareBytes(lines, separator)
+	_, err = f.Write(bytes)
+	if err != nil {
+		_ = f.Close()
+		return err
+	}
+	err = f.Close()
+	return err
 }
 
 func WriteAllText(file string, text string) []byte {
