@@ -1,4 +1,4 @@
-module gfu
+module github.com/wissance/gfu
 
 go 1.19
 
