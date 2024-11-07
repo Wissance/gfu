@@ -1,8 +1,8 @@
 package gfu_test
 
 import (
-	"gfu"
 	"github.com/stretchr/testify/assert"
+	"github.com/wissance/gfu"
 	"github.com/wissance/gwuu/testingutils"
 	"os"
 	"path"
