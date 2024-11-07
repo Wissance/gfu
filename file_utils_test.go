@@ -4,6 +4,7 @@ import (
 	"gfu"
 	"github.com/stretchr/testify/assert"
 	"github.com/wissance/gwuu/testingutils"
+	"os"
 	"path"
 	"testing"
 )
@@ -91,4 +92,28 @@ func TestReadAllLine(t *testing.T) {
 			testingutils.CheckStrings(t, tCase.expectedLines, actualLines, true, true)
 		})
 	}
+}
+
+func TestWriteAllLines(t *testing.T) {
+	lines := []string{
+		"Line one",
+		"Line two",
+		"Line three",
+		"Line four",
+		"{",
+		"    \"id\": 1,",
+		"    \"name\": \"Michael Ushakov\"",
+		"}",
+	}
+	testFile := "sample_test.txt"
+	err := gfu.WriteAllLines(testFile, lines, "\n")
+	assert.NoError(t, err)
+	readLines, err := gfu.ReadAllLines(testFile, true)
+	assert.NoError(t, err)
+	testingutils.CheckStrings(t, lines, readLines, true, true)
+	_ = os.Remove(testFile)
+}
+
+func TestAppendAllLines(t *testing.T) {
+
 }

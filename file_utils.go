@@ -15,13 +15,14 @@ func ReadAllLines(file string, omitEmpty bool) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	strContent := string(content)
 	// 2. Define line separator, most popular \n (Linux) or \r\n (Windows), anyway \r\n already contains \r
 	endSeparator := "\n"
-	if strings.Contains(string(content), endSeparator) {
+	if !strings.Contains(strContent, endSeparator) {
 		// using Mac-like separator
 		endSeparator = "\r"
 	}
-	rawLines := strings.Split(string(content), endSeparator)
+	rawLines := strings.Split(strContent, endSeparator)
 	lines := make([]string, 0)
 
 	finalLinesNumber := 0
@@ -57,7 +58,7 @@ func ReadAllText(file string) (string, error) {
 	return string(content), err
 }
 
-// WriteAllLines write lines in file truncating it, if file does not exists
+// WriteAllLines write lines in file truncating it, if file does not exist
 // it will be created
 func WriteAllLines(file string, lines []string, separator string) error {
 	bytes := prepareBytes(lines, separator)
@@ -79,8 +80,8 @@ func AppendAllLines(file string, lines []string, separator string) error {
 	return err
 }
 
-func WriteAllText(file string, text string) []byte {
-	return nil
+func WriteAllText(file string, text string) error {
+	return os.WriteFile(file, []byte(text), 0666)
 }
 
 func prepareBytes(lines []string, separator string) []byte {
