@@ -2,6 +2,8 @@
 
 `GFU` contains following functions:
 
+![GFU](/docs/gfu.png)
+
 1. Read file content as slice of strings via `ReadAllLines`
 ```go
 import (
